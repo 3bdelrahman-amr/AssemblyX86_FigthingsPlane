@@ -1,0 +1,183 @@
+Microsoft (R) Macro Assembler Version 5.00                  12/7/19 16:05:16
+                                                             Page     1-1
+
+
+				 
+				;extrn draw_bkgnd:far 
+				extrn draw_pic_rht:far,draw_pic_left:far,clear_
+				buf:far,get_time:far,shift_tri:far,draw_b:far,m
+				ov_b:far,draw_b2:far 
+				extrn mov_b2:far,draw_arr:far,mov_barr:far,draw
+				_arr2:far,mov_barr2:far, clear_screen:far ;;,dr
+				aw_bkgnd:far 
+				extrn clear_arr:far,clear_arr2:far,kill_plane_r
+				ht:far,kill_plane_lft:far,draw_health:far,draw_
+				health2:far,is_gameOver:far 
+				extrn draw_barrier:far,barrier_mov:far,draw_bar
+				rier_rht:far,rht_barrier_mov:far,is_gameOver2:f
+				ar 
+				extrn set_:far,draw_stars:far 
+				.model huge 
+ 0000				.data 
+				  
+				 
+				;------------------------------ 
+				;coord dw 5,40,5,60 
+				 
+				;color db  5 
+				;top dw 0  
+				;bool dw 0 
+				;bool2 dw 0 
+ 0000  00			prev_time db 0 
+ 0001  003C 005A		bullet dw 60,90 
+ 0005  0004			bullet_size dw 4 
+ 0007  ????			yoyo dw ? 
+				 
+				 
+				 
+ 0000				.code 
+ 0000				main proc far 
+ 0000  B8 ---- R		    mov ax,@data 
+ 0003  8E D8			    mov ds,ax  
+ 0005  B8 A000			    mov ax,0a000h 
+ 0008  8E C0			    mov es,ax 
+ 000A  B4 00			    mov ah,0 
+ 000C  B0 13			    mov al,13h 
+ 000E  CD 10			    int 10h 
+				   ; call set_ 
+ 0010				    begining: 
+				     
+ 0010  9A 0000 ---- E		     call clear_screen   ;;1 
+				    
+				  ;; call draw_bkgnd 
+ 0015  9A 0000 ---- E		        call draw_stars     ;;2 
+				 
+ 001A  9A 0000 ---- E		       call draw_health   ;;3 
+ 001F  9A 0000 ---- E		    call draw_health2   ;;4 
+ 0024  9A 0000 ---- E		    call draw_pic_left   ;;5 
+ 0029  9A 0000 ---- E		    call draw_pic_rht   ;;6 
+Microsoft (R) Macro Assembler Version 5.00                  12/7/19 16:05:16
+                                                             Page     1-2
+
+
+ 002E  9A 0000 ---- E		    call draw_barrier  ;;7 
+ 0033  9A 0000 ---- E		    call draw_barrier_rht  ;;8 
+ 0038  9A 0000 ---- E		    call shift_tri  ;;9 
+ 003D  9A 0000 ---- E		    call clear_buf   ;;10 
+ 0042  9A 0000 ---- E		    call barrier_mov ;;11 
+ 0047  9A 0000 ---- E		    call rht_barrier_mov ;;12 
+ 004C  9A 0000 ---- E		    call mov_barr ;;13  
+ 0051  9A 0000 ---- E		    call mov_barr2 ;;14 
+ 0056  9A 0000 ---- E		    call kill_plane_rht  ;;15 
+ 005B  A3 0007 R		    mov[yoyo],ax 
+ 005E  9A 0000 ---- E		    call kill_plane_lft ;;16 
+ 0063  9A 0000 ---- E		    call draw_arr 
+ 0068  9A 0000 ---- E		    call draw_arr2 
+ 006D  9A 0000 ---- E		    call is_gameOver 
+ 0072  9A 0000 ---- E		     call is_gameOver2 
+				      
+				     
+ 0077  9A 0000 ---- E		    call clear_arr 
+ 007C  9A 0000 ---- E		    call clear_arr2 
+				     
+				   
+				     
+ 0081				    again:  
+ 0081  9A 0000 ---- E		     call get_time 
+ 0086  3A 16 0000 R		            cmp dl,prev_time 
+ 008A  74 F5			    je again 
+ 008C  88 16 0000 R		    mov prev_time,dl 
+				    
+ 0090  E9 0010 R		jmp begining 
+				 
+				 
+ 0093  B4 4C			    mov ah,4ch 
+ 0095  CD 21			    int 21h 
+ 0097				main endp 
+				 
+				 
+				 
+				 
+				 
+ 0097				end main 
+Microsoft (R) Macro Assembler Version 5.00                  12/7/19 16:05:16
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+DGROUP . . . . . . . . . . . . .  	GROUP
+  _DATA  . . . . . . . . . . . .  	0009	WORD	PUBLIC	'DATA'
+PH1_TEXT . . . . . . . . . . . .  	0097	WORD	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+AGAIN  . . . . . . . . . . . . .  	L NEAR	0081	PH1_TEXT
+
+BARRIER_MOV  . . . . . . . . . .  	L FAR 	0000		External
+BEGINING . . . . . . . . . . . .  	L NEAR	0010	PH1_TEXT
+BULLET . . . . . . . . . . . . .  	L WORD	0001	_DATA
+BULLET_SIZE  . . . . . . . . . .  	L WORD	0005	_DATA
+
+CLEAR_ARR  . . . . . . . . . . .  	L FAR 	0000		External
+CLEAR_ARR2 . . . . . . . . . . .  	L FAR 	0000		External
+CLEAR_BUF  . . . . . . . . . . .  	L FAR 	0000		External
+CLEAR_SCREEN . . . . . . . . . .  	L FAR 	0000		External
+
+DRAW_ARR . . . . . . . . . . . .  	L FAR 	0000		External
+DRAW_ARR2  . . . . . . . . . . .  	L FAR 	0000		External
+DRAW_B . . . . . . . . . . . . .  	L FAR 	0000		External
+DRAW_B2  . . . . . . . . . . . .  	L FAR 	0000		External
+DRAW_BARRIER . . . . . . . . . .  	L FAR 	0000		External
+DRAW_BARRIER_RHT . . . . . . . .  	L FAR 	0000		External
+DRAW_HEALTH  . . . . . . . . . .  	L FAR 	0000		External
+DRAW_HEALTH2 . . . . . . . . . .  	L FAR 	0000		External
+DRAW_PIC_LEFT  . . . . . . . . .  	L FAR 	0000		External
+DRAW_PIC_RHT . . . . . . . . . .  	L FAR 	0000		External
+DRAW_STARS . . . . . . . . . . .  	L FAR 	0000		External
+
+GET_TIME . . . . . . . . . . . .  	L FAR 	0000		External
+
+IS_GAMEOVER  . . . . . . . . . .  	L FAR 	0000		External
+IS_GAMEOVER2 . . . . . . . . . .  	L FAR 	0000		External
+
+KILL_PLANE_LFT . . . . . . . . .  	L FAR 	0000		External
+KILL_PLANE_RHT . . . . . . . . .  	L FAR 	0000		External
+
+MAIN . . . . . . . . . . . . . .  	F PROC	0000	PH1_TEXT	Length = 0097
+MOV_B  . . . . . . . . . . . . .  	L FAR 	0000		External
+MOV_B2 . . . . . . . . . . . . .  	L FAR 	0000		External
+MOV_BARR . . . . . . . . . . . .  	L FAR 	0000		External
+MOV_BARR2  . . . . . . . . . . .  	L FAR 	0000		External
+
+PREV_TIME  . . . . . . . . . . .  	L BYTE	0000	_DATA
+
+RHT_BARRIER_MOV  . . . . . . . .  	L FAR 	0000		External
+
+Microsoft (R) Macro Assembler Version 5.00                  12/7/19 16:05:16
+                                                             Symbols-2
+
+
+SET_ . . . . . . . . . . . . . .  	L FAR 	0000		External
+SHIFT_TRI  . . . . . . . . . . .  	L FAR 	0000		External
+
+YOYO . . . . . . . . . . . . . .  	L WORD	0007	_DATA
+
+@CODE  . . . . . . . . . . . . .  	TEXT  ph1_TEXT		
+@CODESIZE  . . . . . . . . . . .  	TEXT  1		
+@DATASIZE  . . . . . . . . . . .  	TEXT  2		
+@FILENAME  . . . . . . . . . . .  	TEXT  ph1		
+
+
+     86 Source  Lines
+     86 Total   Lines
+     48 Symbols
+
+  51136 + 465408 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors
